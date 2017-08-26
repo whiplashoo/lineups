@@ -1,0 +1,109 @@
+{% extends "base.html" %} {% block content %}
+<div class="full">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <svg xmlns="http://www.w3.org/2000/svg" id="squad" width="452" height="684">
+                    <path id="field" fill="#005800" d="M6 0h440c3.32 0 6 2.68 6 6v672c0 3.32-2.68 6-6 6H6c-3.32 0-6-2.68-6-6V6c0-3.32 2.68-6 6-6z" opacity=".7" />
+                    <path id="lines" fill="none" stroke="#efe" stroke-width="3" d="M228 594c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2zM9.9 653.93c4.85 0 8.82 4 8.82 8.9m162.5-100.8a54.9 54.9 0 0 1 89.6 0m76.3 99.63v-99.63h-242.2l.2 99.63m98.6-.2v15.6h44.6v-15.6m-77.9.2v-34.4h111.2v34.4m160.5-7.7c-4.9 0-8.8 4-8.8 8.9M228 90c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zM9.9 30.07c4.85 0 8.82-4 8.82-8.9m162.5 100.8a54.9 54.9 0 0 0 89.6 0m76.3-99.63v99.63h-242.2l.2-99.63m98.6.2V6.94h44.6v15.6m-77.9-.2v34.4h111.2v-34.4m160.5 7.7c-4.9 0-8.8-4-8.8-8.9M228 342c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm52.8 0c0 30.27-24.53 54.8-54.8 54.8-30.27 0-54.8-24.53-54.8-54.8 0-30.27 24.53-54.8 54.8-54.8 30.27 0 54.8 24.53 54.8 54.8zm-269.54 0h429.4M11.22 22.62v638.8h429.6V22.62z" />
+                    <path id="path3087" fill="#ace" d="M134.77 162.3c0 12-9.73 21.74-21.74 21.74-12 0-21.73-9.73-21.73-21.73s9.73-21.73 21.73-21.73 21.74 9.73 21.74 21.74z" color="#000" stroke-linecap="round" stroke-linejoin="round" overflow="visible" />
+                    <text id="text3089" x="97.09" y="218.82" style="text-align:start;line-height:125%;-inkscape-font-specification:Fira Sans" font-size="13" letter-spacing="0" word-spacing="0" font-family="Fira Sans">
+                        <tspan id="tspan3091" x="97.09" y="218.82" fill="#fff" style="-inkscape-font-specification:Fira Sans Bold" font-size="28" font-weight="bold">CF</tspan>
+                    </text>
+                </svg>
+                <canvas id="canvas1" width="452" height="684"></canvas>
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-sm" id="image"> Insert Image</button>
+                <button type="button" class="btn btn-sm" id="convert"> Download</button>
+                <input type="text" onkeyup="liveSearch(this.value)">
+                <!-- Assigns the key up event to call the liveSearch() function -->
+                <br>
+                <div id="results"></div>
+                <!-- Results will be printed here -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="/static/js/vendor/jquery-1.12.0.min.js"><\/script>')
+</script>
+<script src="/static/js/plugins.js"></script>
+<script src="/static/js/main.js"></script>
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+function liveSearch(value) {
+    value = value.trim(); // remove any spaces around the text
+    if (value != "") { // don't make requests with an empty string
+        $.ajax({
+            url: "search",
+            data: { searchText: value },
+            dataType: "json",
+            success: function(data) {
+                var res = "";
+                // create the html with results
+                for (i in data.results) {
+                    res += "<div>" + data.results[i] + "</div>";
+                }
+                $("#results").html(res);
+            }
+
+        });
+    } else {
+        $("#results").html(""); // set the results empty in case of empty string
+    }
+}
+// function toDataURI() {
+//     var img = new Image();
+//     img.src = 'img/messi.jpg';
+//     img.onload = function() {
+//         var canvas = document.createElement('canvas'),
+//             context = canvas.getContext('2d');
+//         canvas.width = img.width;
+//         canvas.height = img.height;
+//         context.drawImage(img, 0, 0, img.width, img.height);
+
+//         return canvas.toDataURL('image/png');
+//     };
+// }
+
+
+// $('#image').click(function() {
+//     var svgimg = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+//     svgimg.setAttributeNS(null, 'height', '200');
+//     svgimg.setAttributeNS(null, 'width', '200');
+//     var messi = "img/messi.jpg";
+//     var uriImg = toDataURI();
+//     svgimg.setAttributeNS("http://www.w3.org/1999/xlink", "href", uriImg);
+//     svgimg.setAttributeNS(null, 'x', '10');
+//     svgimg.setAttributeNS(null, 'y', '10');
+//     svgimg.setAttributeNS(null, 'visibility', 'visible');
+//     $('svg').append(svgimg);
+// })
+
+
+// $('#convert').click(function() { convert(); });
+
+// function convert() {
+//     var DOMURL = self.URL || self.webkitURL || self;
+//     var svgString = new XMLSerializer().serializeToString(document.querySelector('#squad'));
+
+//     var svgStringForWebkit = "data:image/svg+xml," + svgString;
+//     var canvas1 = document.getElementById("canvas1");
+//     var ctx = canvas1.getContext("2d");
+
+//     var img1 = new Image();
+//     img1.src = svgStringForWebkit;
+
+//     img1.onload = function() {
+//         ctx.drawImage(img1, 0, 0, canvas1.width, canvas1.height);
+//     };
+
+//     var dataURL = canvas1.toDataURL("image/png");
+
+//     $('#canvas1').show();
+//     $('#squad').hide();
+// }
+</script>
+{% endblock %}
