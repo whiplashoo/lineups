@@ -29,3 +29,5 @@ pip-log.txt
 venv
 *.pyc
 build
+
+config.py
